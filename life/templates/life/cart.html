@@ -14,33 +14,34 @@
 		<script src="{% static '/life/vendor/jquery-ui/jquery-ui.min.js' %}"></script>
 	</head>
 	<body>
-		<div class="inventory col-lg-12">
-
-				Food Pantry Items
-
+		<div class="title">
+			<h1>
+				Food Items
+			</h1>
 		</div>
+
 		
-		<div class="items_view col-lg-12">
+		<div class="cart_items">
 			
 			{% for item in items %}
-				<div class="item col-lg-12">
-					<div class ="item_name col-lg-6">
+				<div class="food_item">
+					<div class ="item_name">
 						{{item.name}}
 					</div>
-					<div class = "stock col-lg-2">
+					<div class = "stock">
 						{{item.quantity}}
 					</div>
-					<div class = "cost col-lg-2">
+					<div class = "cost">
 						{{item.cost}}
 					</div>
-					<div button="add col-lg-2">
+					<div button="add">
 					</div>
 			`</div>
 			{% endfor %}
-			
-
 		</div>
-
+		<div button="collect">
+			
+		</div>
 		
 		
 	</body>

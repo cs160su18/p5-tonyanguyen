@@ -14,34 +14,10 @@
 		<script src="{% static '/life/vendor/jquery-ui/jquery-ui.min.js' %}"></script>
 	</head>
 	<body>
-		<div class="inventory col-lg-12">
-
-				Food Pantry Items
-
-		</div>
-		
-		<div class="items_view col-lg-12">
-			
-			{% for item in items %}
-				<div class="item col-lg-12">
-					<div class ="item_name col-lg-6">
-						{{item.name}}
-					</div>
-					<div class = "stock col-lg-2">
-						{{item.quantity}}
-					</div>
-					<div class = "cost col-lg-2">
-						{{item.cost}}
-					</div>
-					<div button="add col-lg-2">
-					</div>
-			`</div>
-			{% endfor %}
-			
-
-		</div>
-
-		
-		
+    <h2>Register</h2>
+    <form method="post">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Register</button>
+    </form>
 	</body>
 </html>
