@@ -156,3 +156,33 @@ table {
     background-color: #f1f1f1;
     border: 1px solid #0d124a11;
 }
+
+/* Food Inventory View */
+
+.items_view {
+	width: 1000px;
+	margin: 0 auto;
+
+}
+
+.title {
+	margin-left: 200px;
+}
+
+.inventory {
+	padding-left: 100px;
+  font-family: "Fira Sans";
+  font-size: 45px;
+  color: #0d124a;
+}
+
+.item {
+}
+
+.item_name {
+
+}
+
+.stock {
+
+}
