@@ -174,3 +174,14 @@ table {
 .add-top-margin {
   margin-top: 2rem;
 }
+
+.item-btn-contain>button {
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+
+.col-align-content {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}

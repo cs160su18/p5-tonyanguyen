@@ -24,14 +24,14 @@
       </div>
     <div class="container">
       
-      <div class="row">
-        <div id="item_label" class="col-6">
+      <div class="row alert alert-secondary">
+        <div id="item_label" class="col-6 col-align-content">
           Item
         </div>
-        <div id="quantity_label" class="col">
+        <div id="quantity_label" class="col col-align-content">
           Quantity
         </div>
-        <div id="cost_label" class="col">
+        <div id="cost_label" class="col col-align-content">
           Cost
         </div>
         <div class="add col">
@@ -40,16 +40,16 @@
 
       {% for item in items %}
       <div class="row">
-        <div class="item_name col-6">
+        <div class="item_name col-6 col-align-content">
           {{item.name}}
         </div>
-        <div class="stock col">
+        <div class="stock col col-align-content">
           {{item.quantity}}
         </div>
-        <div class="cost col">
+        <div class="cost col col-align-content">
           {{item.cost}}
         </div>
-        <div class="add col">
+        <div class="add col col-align-content item-btn-contain">
           <button id="btn-add-{{item.pk}}" type="button" class="btn btn-outline-info btn-add-cart">
             Add to cart
           </button>

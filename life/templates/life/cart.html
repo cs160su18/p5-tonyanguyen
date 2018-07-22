@@ -24,36 +24,36 @@
     
 	    <div class="container">
       
-      <div class="row">
-        <div class="col">
+      <div class="row alert alert-secondary">
+        <div class="col col-align-content">
           Item
         </div>
-        <div class="col">
+        <div class="col col-align-content">
           Quantity
         </div>
-        <div class="col">
+        <div class="col col-align-content">
           Cost
         </div>
-        <div class="col">
+        <div class="col col-align-content">
         </div>        
       </div>
 
       {% for item in items %}
       <div class="row" id="row-item-{{item.id}}">
-        <div class="col" id="label-name-{{item.id}}">
+        <div class="col col-align-content" id="label-name-{{item.id}}">
           {{item.item.name}}
         </div>
-        <div class="col" id="label-quant-{{item.id}}">
+        <div class="col col-align-content" id="label-quant-{{item.id}}">
           {{item.quantity}}
         </div>
-        <div class="col" id="label-cost-{{item.id}}">
+        <div class="col col-align-content" id="label-cost-{{item.id}}">
           {{item.item.cost}}
         </div>
-        <div class="col">
-          <div class="btn-group" role="group" aria-label="Cart item controls">
-            <button type="button" id="btn-inc-{{item.id}}" class="btn btn-secondary btn-update">+</button>
-            <button type="button" id="btn-dec-{{item.id}}" class="btn btn-secondary btn-update">-</button>
-            <button type="button" id="btn-remove-{{item.id}}" class="btn btn-secondary btn-update">Remove</button>
+        <div class="col col-align-content">
+          <div class="btn-group item-btn-contain" role="group" aria-label="Cart item controls">
+            <button type="button" id="btn-inc-{{item.id}}" class="btn btn-light btn-update">+</button>
+            <button type="button" id="btn-dec-{{item.id}}" class="btn btn-light btn-update">-</button>
+            <button type="button" id="btn-remove-{{item.id}}" class="btn btn-light btn-update">Remove</button>
           </div>
         </div>
       </div>
