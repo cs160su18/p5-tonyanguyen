@@ -126,7 +126,22 @@
         dataType: 'json',
         success: function(data) {
           console.log(data);
-          // check returned data to see if this was successful, then do something relevant
+          if (data.status === "success") {
+            switch (data.method) {
+              case 'inc':
+                $('#label-quant-' + data.cart_id).html(data.quantity);
+                break;
+              case 'dec':
+                $('#label-quant-' + data.cart_id).html(data.quantity);
+                break;
+              case 'remove':
+                $('#row-item-' + data.cart_id).remove();
+                break;
+              default:
+                console.log('unknown method ' + data.method)
+                break;
+            }
+          }
         }
       });
       

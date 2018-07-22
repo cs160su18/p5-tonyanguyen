@@ -78,11 +78,15 @@ def editcart(request):
                 cart_item = Cart.objects.get(item__id=data['inventory_id'])
             except:
                 cart_item = None
+                
+        if cart_item:
+            resp['cart_id'] = cart_item.id
 
         if data['type'] == 'add':
             if not cart_item and inv_item:
-                newentry = Cart(item_id=inv_item.id, quantity=1)
-                newentry.save()
+                cart_item = Cart(item_id=inv_item.id, quantity=1)
+                cart_item.save()
+                resp['cart_id'] = cart_item.id
                 resp['info'] = 'added new cart item (none prior existing)'
                 return JsonResponse(resp)
             elif cart_item:
@@ -113,6 +117,9 @@ def editcart(request):
                     return JsonResponse(resp)
                 else:
                     cart_item.delete()
+                    resp['info'] = 'deleted item from cart'
+                    resp['method'] = 'remove'
+                    return JsonResponse(resp)
             else:
                 resp['status'] = 'error'
                 resp['reason'] = 'no matching cart item found'
@@ -136,6 +143,8 @@ def editcart(request):
                     return JsonResponse(resp)
                 else:
                     cart_item.delete()
+                    resp['info'] = 'deleted item from cart'                    
+                    return JsonResponse(resp)
             else:
                 resp['status'] = 'error'
                 resp['reason'] = 'no matching cart item found'
