@@ -61,6 +61,10 @@ def admin(request):
 def editcart(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
+        resp = {
+            'status': 'success',
+            'method': data['type']
+        }
 
         try:
             inv_item = Item.objects.get(pk=data['inventory_id'])
@@ -68,43 +72,81 @@ def editcart(request):
             inv_item = None            
             
         try:
-            cart_item = Item.objects.get(pk=data['cart_id'])
+            cart_item = Cart.objects.get(pk=data['cart_id'])
         except:
             try:
-                cart_item = Item.objects.get(item__id=data['inventory_id'])
+                cart_item = Cart.objects.get(item__id=data['inventory_id'])
             except:
                 cart_item = None
-            
-        print(item)
 
         if data['type'] == 'add':
-            newentry = addtocart(data['id'])
+            if not cart_item and inv_item:
+                newentry = Cart(item_id=inv_item.id, quantity=1)
+                newentry.save()
+                resp['info'] = 'added new cart item (none prior existing)'
+                return JsonResponse(resp)
+            elif cart_item:
+                cart_item.quantity = cart_item.quantity + 1
+                cart_item.save()
+                resp['quantity'] = cart_item.quantity
+                resp['info'] = 'increased cart item quantity' 
+                return JsonResponse(resp)
+            else:
+                resp['status'] = 'error'
+                resp['reason'] = 'no matching cart or inventory item found' 
+                return JsonResponse(resp)
         elif data['type'] == 'remove':
-            removefromcart(data['id'])
+            if cart_item:
+                cart_item.delete()
+                resp['info'] = 'deleted item from cart'
+                return JsonResponse(resp)
+            else:
+                resp['status'] = 'error'
+                resp['reason'] = 'no matching cart item found'
+                return JsonResponse(resp)
         elif data['type'] == 'setquantity':
-            temp = Cart.objects.get(item__id=id).quantity
+            if cart_item:
+                if data['quantity'] > 1:
+                    cart_item.quantity = data['quantity']
+                    cart_item.save()
+                    resp['quantity'] = cart_item.quantity
+                    return JsonResponse(resp)
+                else:
+                    cart_item.delete()
+            else:
+                resp['status'] = 'error'
+                resp['reason'] = 'no matching cart item found'
+                return JsonResponse(resp)
         elif data['type'] == 'inc':            
-            print(Cart.objects.get(item__id=id).quantity)
-            Cart.objects.get(item__id=id).quantity += 1;
-            return JsonResponse({'status': 'success', 'quantity': Cart.objects.get(item__id=id).quantity})
+            if cart_item:
+                cart_item.quantity = cart_item.quantity + 1
+                cart_item.save()
+                resp['quantity'] = cart_item.quantity
+                return JsonResponse(resp)
+            else:
+                resp['status'] = 'error'
+                resp['reason'] = 'no matching cart item found'
+                return JsonResponse(resp)
         elif data['type'] == 'dec':
-            Cart.objects.get(item__id=id).quantity -= 1;
-            if Cart.objects.get(item__id=id).quantity <= 0:
-                removefromcart(data['id'])
-            return JsonResponse({'status': 'success', 'quantity': Cart.objects.get(item__id=id).quantity})
+            if cart_item:
+                if cart_item.quantity > 1:
+                    cart_item.quantity = cart_item.quantity - 1
+                    cart_item.save()
+                    resp['quantity'] = cart_item.quantity
+                    return JsonResponse(resp)
+                else:
+                    cart_item.delete()
+            else:
+                resp['status'] = 'error'
+                resp['reason'] = 'no matching cart item found'
+                return JsonResponse(resp)
         else:
-            print('unknown data type posted to editcart: ' + data['type'])
-            return JsonResponse({'status': 'error', 'method': data['type']})
-    return JsonResponse({'status': 'success', 'method': data['type']})
+            print('unknown data type posted to editcart: ' + data['type'])            
+            resp['status'] = 'error'
+            resp['reason'] = 'unknown data type'
+            return JsonResponse(resp)
 
-def addtocart(id):
-    # check if item is in cart, otherwise increase quantity
-    newentry = Cart(item_id=id, quantity=1)
-    newentry.save()
-    return newentry
-
-def removefromcart(id):
-    Cart.objects.get(pk=id).delete()
+    return JsonResponse({'status': 'unknown', 'method': data['type']})
 
 def edititems(request):
     if request.method == 'POST':
