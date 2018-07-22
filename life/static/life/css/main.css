@@ -170,3 +170,7 @@ table {
 .header {
 	font-size: 25px;
 }
+
+.add-top-margin {
+  margin-top: 2rem;
+}

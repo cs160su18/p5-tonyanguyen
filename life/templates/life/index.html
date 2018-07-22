@@ -24,7 +24,7 @@
       </div>
     <div class="container">
       
-      <div class="row header">
+      <div class="row">
         <div id="item_label" class="col-6">
           Item
         </div>
@@ -50,15 +50,15 @@
           {{item.cost}}
         </div>
         <div class="add col">
-          <button id="{{item.pk}}" type="button" class="btn btn-outline-info swapbutton">
-            Swap Item
+          <button id="btn-add-{{item.pk}}" type="button" class="btn btn-outline-info btn-add-cart">
+            Add to cart
           </button>
         </div>
       </div>
       {% endfor %}
 
 
-      <div class="row">
+      <div class="row add-top-margin">
         <a class="btn btn-primary btn-lg btn-block" href="cart">View Cart</a>
       </div>
 
@@ -81,14 +81,15 @@
     }
     var csrftoken = getCookie('csrftoken');
     
-    $(".swapbutton").click(function(e) {
+    $(".btn-add-cart").click(function(e) {
+      var match = e.currentTarget.id.match(/(\w+)-(\w+)-(\d+)/);
       $.ajax({
         url: '/life/editcart/',
         type: 'POST',
         headers: { 'X-CSRFToken': '{{ csrf_token }}' },
         data: JSON.stringify({
-          'type': 'add',
-          'id': e.currentTarget.id
+          'type': match[2],
+          'inventory_id': match[3]
         }),
         contentType: 'application/json',
         dataType: 'json',

@@ -63,43 +63,48 @@ def editcart(request):
         data = json.loads(request.body.decode('utf-8'))
 
         try:
-            item = Item.objects.get(pk=data['id'])
+            inv_item = Item.objects.get(pk=data['inventory_id'])
         except:
-            item = None
+            inv_item = None            
+            
+        try:
+            cart_item = Item.objects.get(pk=data['cart_id'])
+        except:
+            try:
+                cart_item = Item.objects.get(item__id=data['inventory_id'])
+            except:
+                cart_item = None
             
         print(item)
 
         if data['type'] == 'add':
             newentry = addtocart(data['id'])
-            return JsonResponse({'status': 'success', 'data': newentry})
         elif data['type'] == 'remove':
             removefromcart(data['id'])
-        elif data['type'] == 'swap':
-            addtocart(data['id'])
-            return JsonResponse({'status': 'success', 'incart': True})
         elif data['type'] == 'setquantity':
-            Cart.objects.get(item__id=id).quantity
-            return JsonResponse({'status': 'success', 'quantity': newquantity})
-        elif data['type'] == 'increment':            
+            temp = Cart.objects.get(item__id=id).quantity
+        elif data['type'] == 'inc':            
+            print(Cart.objects.get(item__id=id).quantity)
             Cart.objects.get(item__id=id).quantity += 1;
             return JsonResponse({'status': 'success', 'quantity': Cart.objects.get(item__id=id).quantity})
-        elif data['type'] == 'decrement':
+        elif data['type'] == 'dec':
             Cart.objects.get(item__id=id).quantity -= 1;
             if Cart.objects.get(item__id=id).quantity <= 0:
                 removefromcart(data['id'])
             return JsonResponse({'status': 'success', 'quantity': Cart.objects.get(item__id=id).quantity})
         else:
             print('unknown data type posted to editcart: ' + data['type'])
-            return JsonResponse({'status': 'error'})
-    return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'error', 'method': data['type']})
+    return JsonResponse({'status': 'success', 'method': data['type']})
 
 def addtocart(id):
+    # check if item is in cart, otherwise increase quantity
     newentry = Cart(item_id=id, quantity=1)
     newentry.save()
     return newentry
 
 def removefromcart(id):
-    Cart.objects.get(item__id=id).delete()
+    Cart.objects.get(pk=id).delete()
 
 def edititems(request):
     if request.method == 'POST':
