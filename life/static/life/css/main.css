@@ -159,15 +159,6 @@ table {
 
 /* Food Inventory View */
 
-.items_view {
-	width: 1000px;
-	margin: 0 auto;
-
-}
-
-.title {
-	margin-left: 200px;
-}
 
 .inventory {
 	padding-left: 100px;
@@ -176,13 +167,6 @@ table {
   color: #0d124a;
 }
 
-.item {
-}
-
-.item_name {
-
-}
-
-.stock {
-
+.header {
+	font-size: 25px;
 }

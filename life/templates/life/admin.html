@@ -14,41 +14,43 @@
 		<script src="{% static '/life/vendor/jquery-ui/jquery-ui.min.js' %}"></script>
 	</head>
 	<body>
-	    <div class="container">
+    <div class="container">
 
       <div class="row">
         <h1>
-          Your Cart
+          Food Pantry Index
         </h1>
       </div>
       
-      <div class="row">
-        <div class="col">
+      <div class="row header">
+        <div class="item_name col-lg-6">
           Item
         </div>
-        <div class="col">
+        <div class="stock col-lg-2">
           Quantity
         </div>
-        <div class="cost col">
+        <div class="cost col-lg-2">
           Cost
         </div>
-        <div button="add col">
+        <div button="add col-lg-2">
         </div>        
       </div>
 
       {% for item in items %}
       <div class="row">
-        <div class="col">
-          {{item.item.name}}
+        <div class="item_name col-lg-6">
+          {{item.name}}
         </div>
-        <div class="col">
+        <div class="stock col-lg-2">
           {{item.quantity}}
         </div>
-        <div class="cost col">
-          {{item.item.cost}}
+        <div class="cost col-lg-2">
+          {{item.cost}}
         </div>
-        <div button="add col">
-          I don't care
+        <div button="add col-lg-2">
+          <button>
+            Swap Item
+          </button>
         </div>
       </div>
       {% endfor %}
@@ -56,14 +58,10 @@
 
       <div class="row">
         <button class="collect">
-           Pick Up Items
+           View Cart
         </button>
       </div>
 
     </div>
-
-
-		
-		
 	</body>
 </html>

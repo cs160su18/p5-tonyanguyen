@@ -14,33 +14,92 @@
 		<script src="{% static '/life/vendor/jquery-ui/jquery-ui.min.js' %}"></script>
 	</head>
 	<body>
-		<div class="inventory col-lg-12">
+    <div class="container">
 
-				Food Pantry Items
+      <div class="row">
+        <h1>
+          Food Pantry Index
+        </h1>
+      </div>
+      
+      <div class="header row">
+        <div id="item_label" class="col-6">
+          Item
+        </div>
+        <div id="quantity_label" class="col">
+          Quantity
+        </div>
+        <div id="cost_label" class="col">
+          Cost
+        </div>
+        <div class="add col">
+        </div>        
+      </div>
 
-		</div>
-		
-		<div class="items_view col-lg-12">
-			
-			{% for item in items %}
-				<div class="item col-lg-12">
-					<div class ="item_name col-lg-6">
-						{{item.name}}
-					</div>
-					<div class = "stock col-lg-2">
-						{{item.quantity}}
-					</div>
-					<div class = "cost col-lg-2">
-						{{item.cost}}
-					</div>
-					<div button="add col-lg-2">
-					</div>
-			`</div>
-			{% endfor %}
-			
+      {% for item in items %}
+      <div class="row">
+        <div class="item_name col-6">
+          {{item.name}}
+        </div>
+        <div class="stock col">
+          {{item.quantity}}
+        </div>
+        <div class="cost col">
+          {{item.cost}}
+        </div>
+        <div class="add col">
+          <button id="{{item.pk}}" class="swapbutton">
+            Swap Item
+          </button>
+        </div>
+      </div>
+      {% endfor %}
 
-		</div>
 
+      <div class="row">
+        <button class="collect">
+          
+           View Cart
+        </button>
+      </div>
+
+    </div>
+	
+	<script>    
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = jQuery.trim(cookies[i]);
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    
+    $(".swapbutton").click(function(e) {
+      $.ajax({
+        url: '/life/editcart/',
+        type: 'POST',
+        headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+        data: JSON.stringify({
+          'type': 'swap',
+          'id': e.currentTarget.id
+        }),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function(data) {
+          console.log(data);
+          // check returned data to see if this was successful, then do something relevant
+        }
+      });
+    });
+	</script>
 		
 		
 	</body>

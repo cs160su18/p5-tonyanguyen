@@ -13,7 +13,6 @@ class Item(models.Model):
 		return self.quantity > 0
 
 class Cart(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	item = models.ForeignKey(Item, on_delete=models.CASCADE)
 	quantity = models.PositiveSmallIntegerField()
 	
