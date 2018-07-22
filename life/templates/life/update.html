@@ -14,16 +14,21 @@
 		<script src="{% static '/life/vendor/jquery-ui/jquery-ui.min.js' %}"></script>
 	</head>
 	<body>
-    <h2>
-      {% if item %}
-        Update {{ item.name }} (Item {{id}})
-      {% else %}
-        Add New Item
-      {% endif %}      
-    </h2>
-    <form method="post">
-      {% csrf_token %} {{ form.as_p }}
-      <button type="submit">Submit Changes</button>
-    </form>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">
+          {% if item %} Update Item {{id}} {% else %} Add New Item {% endif %}
+        </h1>
+        {% if item %}
+        <p class="lead text-muted">{{ item.name }}</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="container">
+      <form method="post">
+        {% csrf_token %} {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit Changes</button>
+      </form>     
+    </div>
 	</body>
 </html>
